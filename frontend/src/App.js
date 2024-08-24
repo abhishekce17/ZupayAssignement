@@ -18,10 +18,12 @@ const YourPost = lazy(() => import("./pages/your-post"));
 const FollowingPost = lazy(() => import("./pages/following-post"));
 
 function App() {
+
   return (
     <div className="App border-spacing-0 border-t-4 border-primary h-screen">
       <main className="h-full flex  flex-col" >
         <BrowserRouter>
+
           <section className="header" >
             <Header />
           </section>
