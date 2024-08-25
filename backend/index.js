@@ -12,8 +12,8 @@ const PostRouter = require("./routes/post");
 const AuthRouter = require("./routes/auth");
 
 const app = express();
-// app.use(cors());
-app.use(cors({ origin: process.env.FRONTEND_URI }));
+app.use(cors());
+// app.use(cors({ origin: process.env.FRONTEND_URI }));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
