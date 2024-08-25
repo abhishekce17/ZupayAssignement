@@ -6,12 +6,14 @@ import { userFollowingAtom } from '../stores/atoms/user'
 import PostLayout from '../components/Post-Layout'
 import { notify } from '../utils/notify'
 import { useCookies } from 'react-cookie'
+import PostLoadSkeleton from '../components/Post-Load-Skeleton'
 
 export default function FollowingPost() {
     const userFollowing = useRecoilValue(userFollowingAtom);
     const [postsSnapshot, setPostsSnapshot] = useState([]);
     const [cookies] = useCookies(["authToken"]);
     const [selectedAuthor, setSelectedAuthor] = useState("all");
+    const [loading, setLodaing] = useState(true);
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
@@ -37,9 +39,10 @@ export default function FollowingPost() {
         if (cookies.authToken) {
             fetchPostsSnapshot()
         }
+        setLodaing(false);
     }, [selectedAuthor]);
     return (<RedirecToLogin>
-        <div>
+        {loading ? <PostLoadSkeleton /> : <div>
             <div className='tags flex gap-6 mb-2 overflow-x-scroll no-scrollbar' >
                 <TagLayout selected={selectedAuthor === "all"} >
                     <button onClick={() => setSelectedAuthor("all")} >
@@ -59,7 +62,7 @@ export default function FollowingPost() {
                 }
             </div>
             <PostLayout postsSnapshot={postsSnapshot} />
-        </div>
+        </div>}
     </RedirecToLogin>
     )
 }

@@ -8,11 +8,13 @@ import { useRecoilValue } from 'recoil'
 import { userAtom } from '../stores/atoms/user'
 import { RedirecToLogin } from '../components/Authorization'
 import { useCookies } from 'react-cookie'
+import PostLoadSkeleton from '../components/Post-Load-Skeleton'
 
 export default function YourPost() {
     const [postsSnapshot, setPostSnapshot] = useState([]);
     const userInfo = useRecoilValue(userAtom);
     const [cookies] = useCookies(["authToken"]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
@@ -33,18 +35,19 @@ export default function YourPost() {
         if (cookies.authToken) {
             fetchPostsSnapshot()
         }
+        setLoading(false);
     }, []);
 
 
 
     return (
         <RedirecToLogin>
-            <div>
+            {loading ? <PostLoadSkeleton /> : <div>
                 <PostLayout postsSnapshot={postsSnapshot} editIcon={true} deleteIcon={true} />
                 <Link to="add-post" className=" bg-primary h-max p-3 rounded-xl absolute bottom-24 md:bottom-12 right-6">
                     <AddLogo fillColor={"#ffffff"} />
                 </Link>
-            </div>
+            </div>}
         </RedirecToLogin>
     )
 }

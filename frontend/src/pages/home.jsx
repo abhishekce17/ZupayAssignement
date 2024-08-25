@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { notify } from '../utils/notify';
 import PostLayout from '../components/Post-Layout';
+import PostLoadSkeleton from '../components/Post-Load-Skeleton';
 
 function Home() {
     const [postsSnapshot, setPostSnapshot] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
@@ -23,10 +25,14 @@ function Home() {
         }
 
         fetchPostsSnapshot()
+        setLoading(false);
     }, []);
 
-    return (
-        <PostLayout postsSnapshot={postsSnapshot} />
+    return (<>
+        {loading ? <PostLoadSkeleton /> :
+            <PostLayout postsSnapshot={postsSnapshot} />
+        }
+    </>
     )
 }
 

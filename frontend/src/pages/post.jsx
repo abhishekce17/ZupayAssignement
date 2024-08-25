@@ -7,6 +7,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { useCookies } from 'react-cookie';
 import { userAtom, userFollowingAtom } from '../stores/atoms/user';
 import CommentSection from '../components/Comment-Section';
+import DefaultLoadSkeleton from '../components/Default-Load-Skeleton';
 
 export default function Post() {
     const [postContent, setPostContent] = useState();
@@ -82,12 +83,12 @@ export default function Post() {
     }, [location])
     return (<>
         {
-            !loading &&
-            <div className='bg-white xl:ml-60 xl:mr-60 lg:ml-40 lg:mr-40  p-2 md:p-10 rounded-lg'>
-                <PostContent postContent={postContent.content} title={title} author={postContent.author} authorId={postContent.authorId} follow={follow} alreadyFollowing={userFollowing.some(x => x.authorId === postContent.authorId)} />
-                <CommentInput addComment={addComment} />
-                <CommentSection postComments={postComments} />
-            </div>
+            loading ? <DefaultLoadSkeleton /> :
+                <div className='bg-white xl:ml-60 xl:mr-60 lg:ml-40 lg:mr-40  p-2 md:p-10 rounded-lg'>
+                    <PostContent postContent={postContent.content} title={title} author={postContent.author} authorId={postContent.authorId} follow={follow} alreadyFollowing={userFollowing.some(x => x.authorId === postContent.authorId)} />
+                    <CommentInput addComment={addComment} />
+                    <CommentSection postComments={postComments} />
+                </div>
         }
     </>
     )
