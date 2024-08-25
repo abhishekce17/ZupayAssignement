@@ -33,7 +33,7 @@ export default function Login() {
             setCookie("authToken", data, { path: "/", sameSite: "strict" });
             navigate("/");
         } else {
-            const { error } = await request.json();
+            const error = await request.json();
             notify(error, "error");
         }
     }

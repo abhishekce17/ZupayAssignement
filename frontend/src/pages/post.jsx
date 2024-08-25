@@ -54,7 +54,7 @@ export default function Post() {
         if (request.status === 200) {
             setUsersFollowing((prev) => [...prev, { authorId: authorId, username: author }]);
         } else {
-            const { error } = await request.json();
+            const error = await request.json();
             notify(error, "error");
         }
     }
@@ -71,7 +71,6 @@ export default function Post() {
                 const data = await request.json();
                 setPostContent(data);
                 setPostComment(data.comments);
-                console.log(data);
                 setTitle(data.title);
                 setLodaing(false);
             } else {

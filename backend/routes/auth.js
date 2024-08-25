@@ -11,7 +11,6 @@ const saltRounds = 10;
 router.post("/register", async (req, res) => {
     try {
         const { success, error } = registerSchema.safeParse(req.body);
-        console.log(req.body);
         if (!success) {
             return res.status(400).json(error);
         }
@@ -28,18 +27,17 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     try {
         const { success, error } = loginSchema.safeParse(req.body)
-        console.log(req.body)
         if (!success) {
             return res.status(400).json(error);
         }
         const user = await User.findOne({ email: req.body.email });
         if (!user) {
-            return res.status(401).json({ error: { message: "Invalid Credentials" } });
+            return res.status(401).json("Invalid Credentials");
         }
 
         bcrypt.compare(req.body.password, user.password, function (err, result) {
             if (!result) {
-                return res.status(401).json({ error: { message: "Invalid Credentials" } });
+                return res.status(401).json("Invalid Credentials");
             }
             const authToken = jwt.sign({ userId: user.id, username: user.username }, JWT_SECRET);
             return res.status(200).json(authToken);

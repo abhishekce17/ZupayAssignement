@@ -6,10 +6,13 @@ import PostLayout from '../components/Post-Layout'
 import { notify } from '../utils/notify'
 import { useRecoilValue } from 'recoil'
 import { userAtom } from '../stores/atoms/user'
+import { RedirecToLogin } from '../components/Authorization'
+import { useCookies } from 'react-cookie'
 
 export default function YourPost() {
     const [postsSnapshot, setPostSnapshot] = useState([]);
     const userInfo = useRecoilValue(userAtom);
+    const [cookies] = useCookies(["authToken"]);
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
@@ -27,45 +30,21 @@ export default function YourPost() {
                 notify(error, "error");
             }
         }
-        fetchPostsSnapshot()
+        if (cookies.authToken) {
+            fetchPostsSnapshot()
+        }
     }, []);
 
-    const EditButton = ({ id }) => {
-        const editPost = () => {
-            console.log("Editing");
-        }
-        return (
-            <button onClick={editPost} >
-                {/* <EditLogo fillColor="#3D404B" /> */}
-                <TagLayout>
-                    Edit
-                </TagLayout>
-            </button>
-        )
-    }
-
-    const DeleteButton = ({ id }) => {
-        const deletePost = () => {
-            console.log("Deleting");
-        }
-
-        return (
-            <button onClick={deletePost} >
-                {/* <DeleteLogo fillColor="#3D404B" /> */}
-                <TagLayout>
-                    Delete
-                </TagLayout>
-            </button>
-        )
-    }
 
 
     return (
-        <div>
-            <PostLayout postsSnapshot={postsSnapshot} editIcon={<EditButton />} deleteIcon={<DeleteButton />} />
-            <Link to="add-post" className=" bg-primary h-max p-3 rounded-xl absolute bottom-24 md:bottom-12 right-6">
-                <AddLogo fillColor={"#ffffff"} />
-            </Link>
-        </div>
+        <RedirecToLogin>
+            <div>
+                <PostLayout postsSnapshot={postsSnapshot} editIcon={true} deleteIcon={true} />
+                <Link to="add-post" className=" bg-primary h-max p-3 rounded-xl absolute bottom-24 md:bottom-12 right-6">
+                    <AddLogo fillColor={"#ffffff"} />
+                </Link>
+            </div>
+        </RedirecToLogin>
     )
 }

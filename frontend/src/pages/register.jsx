@@ -28,8 +28,9 @@ export default function Register() {
     }
 
     const handleSubmitForm = async (e) => {
+        e.preventDefault()
         if (registerInput.password !== confirmPassword) {
-            notify("Password is not match", "success");
+            notify("Password is not match", "error");
         } else {
             e.preventDefault();
             const request = await fetch("http://localhost:5000/api/v1/auth/register", {

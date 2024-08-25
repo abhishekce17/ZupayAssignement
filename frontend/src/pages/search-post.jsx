@@ -7,7 +7,6 @@ export default function SearchPost() {
     const [postsSnapshot, setPostSnapshot] = useState([]);
     const handleSubmitForm = async (e) => {
         e.preventDefault();
-        console.log(searchQuery);
         const request = await fetch(`http://localhost:5000/api/v1/post/search?title=${searchQuery}`, {
             method: 'GET',
             headers: {
@@ -19,7 +18,6 @@ export default function SearchPost() {
             setPostSnapshot(response);
         } else {
             const { error } = await request.json();
-            console.log(error);
             notify(error, "error");
         }
     }

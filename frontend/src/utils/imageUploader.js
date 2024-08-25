@@ -18,7 +18,6 @@ export default async function uploader(formData) {
         };
         const imageArray = formData.getAll("file")
         let imgLink = [];
-        console.log("image array : ", imageArray);
         if (imageArray.length) {
             const imgURLPromise = Promise.all(
                 imageArray.map(async (element) => {

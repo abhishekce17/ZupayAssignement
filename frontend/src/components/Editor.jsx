@@ -7,15 +7,17 @@ import uploader from '../utils/imageUploader';
 import { useNavigate } from 'react-router-dom';
 import { notify } from '../utils/notify';
 import { useCookies } from 'react-cookie';
+import { useRecoilValue } from 'recoil';
+import { userAtom } from '../stores/atoms/user';
 
-export const Editor = ({ placeholder, postContent }) => {
+export const Editor = ({ placeholder, postContent, edit }) => {
     const navigate = useNavigate();
-
     const [editorHtml, setEditorHtml] = useState(postContent?.content || '');
     const quillRef = useRef(null);
     const [firstImgLink, setFirstImgLink] = useState(postContent?.firstImgLink || "")
     const [title, setTitle] = useState(postContent?.title || "");
     const [cookies] = useCookies(['authToken']);
+    const userInfo = useRecoilValue(userAtom);
 
     const handleTitle = (e) => {
         const { value } = e.target;
@@ -27,8 +29,10 @@ export const Editor = ({ placeholder, postContent }) => {
             return imgTag.replace(/(width\s*=\s*"[0-9]+")/, 'width="300"');
         }); // Get HTML content
         // saveContentToDatabase(contentHtml);
-        const request = await fetch("http://localhost:5000/api/v1/post", {
-            method: 'POST',
+        const uri = !edit ? "http://localhost:5000/api/v1/post" : `http://localhost:5000/api/v1/post/${postContent._id}`;
+        const method = !edit ? "POST" : "PUT";
+        const request = await fetch(uri, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
                 "Authorization": `Bearer ${cookies.authToken}`
@@ -37,8 +41,8 @@ export const Editor = ({ placeholder, postContent }) => {
                 content: contentHtml,
                 title: title,
                 postedAt: Date.now(),
-                author: "",//userInfo.userName
-                authorId: "",//userInfo.id
+                author: userInfo.username,
+                authorId: userInfo.userId,//userInfo.id
                 firstImgLink: firstImgLink
             })
         })

@@ -25,7 +25,7 @@ function App() {
   const setUser = useSetRecoilState(userAtom);
   const setUsersPost = useSetRecoilState(userPostsAtom);
   const setUsersFollowing = useSetRecoilState(userFollowingAtom);
-  const [cookies] = useCookies("authToken");
+  const [cookies] = useCookies(["authToken"]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -52,7 +52,7 @@ function App() {
       fetchUserInfo()
     }
     setLoading(false);
-  }, [])
+  }, [cookies.authToken])
 
   return (
     <div className="App border-spacing-0 border-t-4 border-primary h-screen">
@@ -73,12 +73,12 @@ function App() {
                   <Route path="/login" element={<Suspense fallback={<DefaultLoadSkeleton />} ><Login /></Suspense>} />
                   <Route path="/register" element={<Suspense fallback={<DefaultLoadSkeleton />} ><Register /></Suspense>} />
                   <Route path="/profile" element={<Suspense fallback={<DefaultLoadSkeleton />} ><AccountSetting /></Suspense>} />
-                  <Route path="/search" element={<Suspense fallback={"Loading"} ><SearchPost /></Suspense>} />
+                  <Route path="/search" element={<Suspense fallback={<PostLoadSkeleton />} ><SearchPost /></Suspense>} />
                   <Route path="/following" element={<Suspense fallback={<PostLoadSkeleton />} ><FollowingPost /></Suspense>} />
                   <Route path="/post/*" element={<Suspense fallback={<DefaultLoadSkeleton />} ><Post /></Suspense>} />
                   <Route path="/your-post" element={<Suspense fallback={<PostLoadSkeleton />} ><YourPost /></Suspense>} />
-                  <Route path="/your-post/edit-post/*" element={<Suspense fallback={"Loading"} ><EditPost /></Suspense>} />
-                  <Route path="/your-post/add-post" element={<Suspense fallback={"Loading"} ><AddPost /></Suspense>} />
+                  <Route path="/your-post/edit-post/*" element={<Suspense fallback={<DefaultLoadSkeleton />} ><EditPost /></Suspense>} />
+                  <Route path="/your-post/add-post" element={<Suspense fallback={<DefaultLoadSkeleton />} ><AddPost /></Suspense>} />
                   <Route path="/*" element={<NotFound />} />
                 </Routes>}
             </section>
