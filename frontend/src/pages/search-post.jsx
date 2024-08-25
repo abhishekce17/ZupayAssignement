@@ -7,7 +7,7 @@ export default function SearchPost() {
     const [postsSnapshot, setPostSnapshot] = useState([]);
     const handleSubmitForm = async (e) => {
         e.preventDefault();
-        const request = await fetch(`http://localhost:5000/api/v1/post/search?title=${searchQuery}`, {
+        const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/post/search?title=${searchQuery}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

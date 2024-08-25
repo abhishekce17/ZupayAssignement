@@ -7,7 +7,7 @@ function Home() {
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
-            const request = await fetch(`http://localhost:5000/api/v1/post`, {
+            const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/post`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

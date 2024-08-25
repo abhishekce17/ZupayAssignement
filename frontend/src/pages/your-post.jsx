@@ -16,7 +16,7 @@ export default function YourPost() {
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
-            const request = await fetch(`http://localhost:5000/api/v1/post/author/${userInfo.userId}`, {
+            const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/post/author/${userInfo.userId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

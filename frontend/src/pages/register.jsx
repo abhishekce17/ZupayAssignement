@@ -33,7 +33,7 @@ export default function Register() {
             notify("Password is not match", "error");
         } else {
             e.preventDefault();
-            const request = await fetch("http://localhost:5000/api/v1/auth/register", {
+            const request = await fetch("https://zupay-assignement-backend.vercel.app/api/v1/auth/register", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

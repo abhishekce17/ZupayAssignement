@@ -20,7 +20,7 @@ export default function Login() {
 
     const handleSubmitForm = async (e) => {
         e.preventDefault();
-        const request = await fetch("http://localhost:5000/api/v1/auth/login", {
+        const request = await fetch("https://zupay-assignement-backend.vercel.app/api/v1/auth/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

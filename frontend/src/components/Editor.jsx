@@ -29,7 +29,7 @@ export const Editor = ({ placeholder, postContent, edit }) => {
             return imgTag.replace(/(width\s*=\s*"[0-9]+")/, 'width="300"');
         }); // Get HTML content
         // saveContentToDatabase(contentHtml);
-        const uri = !edit ? "http://localhost:5000/api/v1/post" : `http://localhost:5000/api/v1/post/${postContent._id}`;
+        const uri = !edit ? "https://zupay-assignement-backend.vercel.app/api/v1/post" : `https://zupay-assignement-backend.vercel.app/api/v1/post/${postContent._id}`;
         const method = !edit ? "POST" : "PUT";
         const request = await fetch(uri, {
             method: method,

@@ -12,7 +12,7 @@ export default function EditPost() {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         const fetchPostContent = async () => {
-            const request = await fetch(`http://localhost:5000/api/v1/post/${postId}`, {
+            const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/post/${postId}`, {
                 method: 'get',
                 headers: {
                     'Content-Type': 'application/json',

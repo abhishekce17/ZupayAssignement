@@ -22,7 +22,7 @@ export default function Post() {
 
     const addComment = async (comment) => {
         if (comment) {
-            const request = await fetch(`http://localhost:5000/api/v1/post/add-comment/${postId}`, {
+            const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/post/add-comment/${postId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ export default function Post() {
 
     const follow = async () => {
         const { authorId, author } = postContent;
-        const request = await fetch(`http://localhost:5000/api/v1/user/follow/${authorId}?username=${author}`, {
+        const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/user/follow/${authorId}?username=${author}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +61,7 @@ export default function Post() {
 
     useEffect(() => {
         const fetchPostContent = (async () => {
-            const request = await fetch(`http://localhost:5000/api/v1/post/${postId}`, {
+            const request = await fetch(`https://zupay-assignement-backend.vercel.app/api/v1/post/${postId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -15,7 +15,7 @@ export default function FollowingPost() {
 
     useEffect(() => {
         const fetchPostsSnapshot = async () => {
-            const uri = selectedAuthor === "all" ? `http://localhost:5000/api/v1/post/author` : `http://localhost:5000/api/v1/post/author/${selectedAuthor}`;
+            const uri = selectedAuthor === "all" ? `https://zupay-assignement-backend.vercel.app/api/v1/post/author` : `https://zupay-assignement-backend.vercel.app/api/v1/post/author/${selectedAuthor}`;
             const method = selectedAuthor === "all" ? "POST" : "GET";
             const request = await fetch(uri, {
                 method: method,

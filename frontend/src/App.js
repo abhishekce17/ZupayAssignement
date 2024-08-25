@@ -29,7 +29,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchUserInfo = async () => {
-      const request = await fetch("http://localhost:5000/api/v1/user", {
+      const request = await fetch("https://zupay-assignement-backend.vercel.app/api/v1/user", {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
