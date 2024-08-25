@@ -4,17 +4,51 @@ import PropTypes from 'prop-types';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import Button from './Button';
 import uploader from '../utils/imageUploader';
+import { useNavigate } from 'react-router-dom';
+import { notify } from '../utils/notify';
+import { useCookies } from 'react-cookie';
 
-export const Editor = ({ placeholder }) => {
-    const [editorHtml, setEditorHtml] = useState('');
+export const Editor = ({ placeholder, postContent }) => {
+    const navigate = useNavigate();
+
+    const [editorHtml, setEditorHtml] = useState(postContent?.content || '');
     const quillRef = useRef(null);
+    const [firstImgLink, setFirstImgLink] = useState(postContent?.firstImgLink || "")
+    const [title, setTitle] = useState(postContent?.title || "");
+    const [cookies] = useCookies(['authToken']);
 
-    const handleSave = () => {
+    const handleTitle = (e) => {
+        const { value } = e.target;
+        setTitle(value);
+    }
+
+    const handleSave = async () => {
         const contentHtml = quillRef.current.getEditor().root.innerHTML.replace(/<img[^>]+>/g, (imgTag) => {
             return imgTag.replace(/(width\s*=\s*"[0-9]+")/, 'width="300"');
         }); // Get HTML content
         // saveContentToDatabase(contentHtml);
-        console.log(contentHtml);
+        const request = await fetch("http://localhost:5000/api/v1/post", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${cookies.authToken}`
+            },
+            body: JSON.stringify({
+                content: contentHtml,
+                title: title,
+                postedAt: Date.now(),
+                author: "",//userInfo.userName
+                authorId: "",//userInfo.id
+                firstImgLink: firstImgLink
+            })
+        })
+        if (request.status === 200) {
+            notify("Blog published", "success");
+            navigate("/your-post");
+        } else {
+            const { error } = await request.json();
+            notify(error, "error")
+        }
     };
 
     const handleImageUpload = () => {
@@ -34,10 +68,11 @@ export const Editor = ({ placeholder }) => {
                 const uploadResponse = await uploader(formData);
                 if (uploadResponse.status === 200) {
                     const imageUrl = uploadResponse.imgLinkArray[0];
-                    console.log(imageUrl);
+                    if (!firstImgLink) {
+                        setFirstImgLink(imageUrl)
+                    }
                     // Get the current selection
                     const range = editor.getSelection(true);
-                    console.log(range);
                     // Check if the selection range is valid
                     if (range) {
                         // Insert the image URL at the current cursor position
@@ -76,7 +111,6 @@ export const Editor = ({ placeholder }) => {
 
     const handleChange = (content, delta, source, editor) => {
         setEditorHtml(editor.getHTML());
-        console.log(editor.getHTML())
         // You can access more properties from the editor if needed
     };
 
@@ -92,6 +126,10 @@ export const Editor = ({ placeholder }) => {
 
     return (
         <div className="editor-container flex flex-col items-center gap-3 w-full">
+            <div className='flex flex-col gap-1 w-full' >
+                <label htmlFor='name' className="justify-start font-bold" >Title</label>
+                <textarea onChange={handleTitle} name='name' id='name' type="text" className="bg-white outline-none p-1 rounded text-lg font-semibold resize-none" value={title} rows="3" required />
+            </div>
             <ReactQuill
                 className="bg-white w-full custom-img"
                 ref={quillRef}

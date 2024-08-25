@@ -3,13 +3,16 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 const loginStatus = (req, res, next) => {
     const tokenWithBearer = req.header("Authorization");
+    console.log(tokenWithBearer)
     if (!tokenWithBearer) {
         return res.status(401).send({ error: "Session Expired" })
     }
     try {
         const token = tokenWithBearer.split("Bearer")[1].trim();
         const decryptToken = jwt.verify(token, JWT_SECRET)
-        req.userId = decryptToken;
+        req.userId = decryptToken.userId;
+        req.username = decryptToken.username
+        console.log(decryptToken);
         next()
     } catch (error) {
         return res.status(401).send({ error: "Session Expired" });

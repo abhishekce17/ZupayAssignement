@@ -9,7 +9,7 @@ export default function Card({ title, src, date, time, href, editIcon, deleteIco
                     <img className='' src={src} />
                 </div>
                 <div className='p-2 text-lg' >
-                    <label>{title}</label>
+                    <div>{title}</div>
                     <div className='flex justify-between text-custom-light-gray text-sm' ><span>{date}</span> <span>{time}</span></div>
                 </div>
             </Link>{

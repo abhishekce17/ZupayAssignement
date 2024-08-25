@@ -26,13 +26,14 @@ const UserSchema = new mongoose.Schema({
     },
     posts: [mongoose.SchemaTypes.ObjectId],
     following: [{
-        _id: false,
         authorId: {
             type: mongoose.SchemaTypes.ObjectId,
             ref: "User",
+            unique: true
         },
         username: {
             type: String,
+            unique: true
         }
     }]
 });

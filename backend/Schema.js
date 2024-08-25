@@ -13,11 +13,12 @@ const loginSchema = z.object({
 });
 
 const postSchema = z.object({
-    content: z.string(),
-    title: z.string(),
-    postedAt: z.date(),
+    content: z.string().min(1),
+    title: z.string().min(1),
+    postedAt: z.number(),
     author: z.string(),
-    authorId: z.string()
+    authorId: z.string(),
+    firstImgLink: z.string().optional()
 });
 
 const updatedPostSchema = z.object({

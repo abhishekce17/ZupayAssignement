@@ -9,12 +9,39 @@ const { loginStatus, postOwnership } = require("../middleware/middleware");
 
 router.get("/", async (req, res) => {
     try {
-        const allPost = await Post.find({});
+        const allPost = await Post.find({}, { firstImgLink: 1, title: 1, postedAt: 1, _id: 1 });
+        console.log(allPost);
         return res.status(200).json(allPost);
     } catch (error) {
         return res.status(500).json(error);
     }
 })
+    .get("/search", async (req, res) => {
+        try {
+            const title = req.query.title;
+            console.log(title)
+            const post = await Post.find({ $text: { $search: title } });
+            if (post.length > 0) {
+                return res.status(200).json(post);
+            }
+            return res.status(404).json({ error: "No post found" });
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    })
+    .get("/author/:authorId", async (req, res) => {
+        try {
+            const authorId = req.params.authorId;
+            const post = await Post.find({ authorId: authorId });
+            if (post.length > 0) {
+                return res.status(200).json(post);
+            }
+            return res.status(404).json({ error: "No post found" });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: "No post found" });
+        }
+    })
     .get("/:id", async (req, res) => {
         try {
             const { id } = req.params;
@@ -24,31 +51,22 @@ router.get("/", async (req, res) => {
             }
             return res.status(404).json({ error: "No post found" });
         } catch (error) {
-            return res.status(500).json(error);
-        }
-    })
-    .get("/search", async (req, res) => {
-        try {
-            const title = req.query.title;
-            const post = await Post.find({ title: title });
-            if (post) {
-                return res.status(200).json(post);
-            }
-            return res.status(404).json({ error: "No post found" });
-        } catch (error) {
-            return res.status(500).json(error);
+            return res.status(500).json({ error: "No post found" });
         }
     })
     .post("/", loginStatus, async (req, res) => {
         try {
             const { success, error } = postSchema.safeParse(req.body);
             if (!success) {
-                return res.status(400).json(error);
+                console.log(error);
+                return res.status(400).json({ error: "Not a valid Post" });
             }
-            const newPost = await Post.create(req.body);
+            console.log(req.body)
+            const newPost = await Post.create({ ...req.body, authorId: req.userId, author: req.username });
             await User.findByIdAndUpdate(req.userId, { $push: { posts: newPost.id } });
-            return res.status(200);
+            return res.status(200).end().end();
         } catch (error) {
+            console.log(error);
             return res.status(500).json(error);
         }
     })
@@ -59,7 +77,7 @@ router.get("/", async (req, res) => {
                 return res.status(400).json(error);
             }
             await Post.findByIdAndUpdate(req.params.id, { $set: { ...req.body } });
-            return res.status(200);
+            return res.status(200).end();
         } catch (error) {
             return res.status(500).json(error);
         }
@@ -71,7 +89,7 @@ router.get("/", async (req, res) => {
                 return res.status(400).json(error);
             }
             await Post.findByIdAndDelete(req.params.id);
-            return res.status(200);
+            return res.status(200).end();
         } catch (error) {
             return res.status(500).json(error);
         }
@@ -81,9 +99,10 @@ router.get("/", async (req, res) => {
             return res.status(400).json(error);
         }
         try {
-            await Post.findByIdAndUpdate(req.params.id, { $push: { comments: { ...req.body } } });
-            return res.status(200);
+            const comment = await Post.findByIdAndUpdate(req.params.id, { $push: { comments: { ...req.body } } });
+            return res.status(200).json({ id: comment.id });
         } catch (error) {
+            console.log(error)
             return res.status(500).json(error);
         }
     });

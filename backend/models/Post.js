@@ -8,7 +8,9 @@ const PostSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        index: true
+    },
+    firstImgLink: {
+        type: String
     },
     postedAt: {
         type: mongoose.SchemaTypes.Date,
@@ -33,5 +35,7 @@ const PostSchema = new mongoose.Schema({
         }
     }]
 })
+
+PostSchema.index({ title: "text" });
 
 module.exports = mongoose.model("Post", PostSchema);
