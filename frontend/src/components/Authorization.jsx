@@ -12,10 +12,7 @@ export function RedirecToLogin({ children }) {
     }, [])
     return (
         <>
-            {
-                !cookies.authToken ? navigate("/login") :
-                    <>{children}</>
-            }
+            {children}
         </>
     )
 }
@@ -30,10 +27,7 @@ export function RedirecToHome({ children }) {
     }, [])
     return (
         <>
-            {
-                cookies.authToken ? navigate("/") :
-                    <>{children}</>
-            }
+            {children}
         </>
     )
 }

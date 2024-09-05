@@ -28,7 +28,7 @@ export default function YourPost() {
                 const response = await request.json();
                 setPostSnapshot(response);
             } else {
-                const { error } = await request.json();
+                const error = await request.json();
                 notify(error, "error");
             }
         }

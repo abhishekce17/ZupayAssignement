@@ -34,12 +34,12 @@ export default function FollowingPost() {
                 const error = await request.json();
                 notify(error, "error");
             }
+            setLodaing(false);
         }
 
         if (cookies.authToken) {
             fetchPostsSnapshot()
         }
-        setLodaing(false);
     }, [selectedAuthor]);
     return (<RedirecToLogin>
         {loading ? <PostLoadSkeleton /> : <div>

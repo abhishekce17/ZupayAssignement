@@ -50,7 +50,7 @@ export const Editor = ({ placeholder, postContent, edit }) => {
             notify("Blog published", "success");
             navigate("/your-post");
         } else {
-            const { error } = await request.json();
+            const error = await request.json();
             notify(error, "error")
         }
     };

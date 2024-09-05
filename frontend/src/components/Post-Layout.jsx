@@ -36,7 +36,7 @@ export default function PostLayout({ postsSnapshot, editIcon, deleteIcon }) {
             if (request.status === 200) {
                 notify("Post is deleted", "success");
             } else {
-                const { error } = await request.json();
+                const error = await request.json();
                 notify(error, "error");
             }
         }

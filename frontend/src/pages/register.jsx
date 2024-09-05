@@ -46,7 +46,7 @@ export default function Register() {
                 setCookie("authToken", data, { path: "/", sameSite: "strict", httpOnly: "true" });
                 navigate("/");
             } else {
-                const { error } = await request.json();
+                const error = await request.json();
                 notify(error, "error");
             }
         }

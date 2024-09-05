@@ -35,7 +35,7 @@ export default function AccountSetting() {
         if (request.status === 200) {
             notify("Updated Successfully", "success");
         } else {
-            const { error } = await request.json();
+            const error = await request.json();
             notify(error, "error");
         }
     }

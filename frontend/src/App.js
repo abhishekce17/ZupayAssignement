@@ -1,32 +1,22 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Sidebar from "./components/Sidebar";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NotFound } from "./pages/not-found";
 import { Header } from "./components/Header";
 import PostLoadSkeleton from "./components/Post-Load-Skeleton";
-import DefaultLoadSkeleton from "./components/Default-Load-Skeleton";
 import { Toaster } from "react-hot-toast";
-import { RecoilRoot, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { useCookies } from "react-cookie";
 import { userAtom, userFollowingAtom, userPostsAtom } from "./stores/atoms/user";
+import { AccountSettingPage, AddPostPage, EditPostPage, FollowingPostPage, HomePage, LoginPage, PostPage, RegisterPage, SearchPostPage, YourPostPage } from "./exports";
 
-const Login = lazy(() => import("./pages/login"));
-const Register = lazy(() => import("./pages/register"));
-const Home = lazy(() => import("./pages/home"));
-const AccountSetting = lazy(() => import("./pages/account-setting"));
-const AddPost = lazy(() => import("./pages/add-post"));
-const Post = lazy(() => import("./pages/post"));
-const SearchPost = lazy(() => import("./pages/search-post"));
-const EditPost = lazy(() => import("./pages/edit-post"));
-const YourPost = lazy(() => import("./pages/your-post"));
-const FollowingPost = lazy(() => import("./pages/following-post"));
 
 function App() {
   const setUser = useSetRecoilState(userAtom);
   const setUsersPost = useSetRecoilState(userPostsAtom);
   const setUsersFollowing = useSetRecoilState(userFollowingAtom);
-  const [cookies] = useCookies(["authToken"]);
   const [loading, setLoading] = useState(true);
+  const [cookies] = useCookies(["authToken"]);
   useEffect(() => {
     const fetchUserInfo = async () => {
       const request = await fetch("https://zupay-assignement-backend.vercel.app/api/v1/user", {
@@ -67,20 +57,21 @@ function App() {
               <Sidebar />
             </section>
             <section className="bg-custom-lightest-gray flex-grow rounded-t-xl md:rounded-none md:rounded-ss-xl p-2 sm:p-6 overflow-y-scroll no-scrollbar" >
-              {loading ? <PostLoadSkeleton /> :
-                <Routes>
-                  <Route path="/" element={<Suspense fallback={<PostLoadSkeleton />} > <Home /> </Suspense>} />
-                  <Route path="/login" element={<Suspense fallback={<DefaultLoadSkeleton />} ><Login /></Suspense>} />
-                  <Route path="/register" element={<Suspense fallback={<DefaultLoadSkeleton />} ><Register /></Suspense>} />
-                  <Route path="/profile" element={<Suspense fallback={<DefaultLoadSkeleton />} ><AccountSetting /></Suspense>} />
-                  <Route path="/search" element={<Suspense fallback={<PostLoadSkeleton />} ><SearchPost /></Suspense>} />
-                  <Route path="/following" element={<Suspense fallback={<PostLoadSkeleton />} ><FollowingPost /></Suspense>} />
-                  <Route path="/post/*" element={<Suspense fallback={<DefaultLoadSkeleton />} ><Post /></Suspense>} />
-                  <Route path="/your-post" element={<Suspense fallback={<PostLoadSkeleton />} ><YourPost /></Suspense>} />
-                  <Route path="/your-post/edit-post/*" element={<Suspense fallback={<DefaultLoadSkeleton />} ><EditPost /></Suspense>} />
-                  <Route path="/your-post/add-post" element={<Suspense fallback={<DefaultLoadSkeleton />} ><AddPost /></Suspense>} />
-                  <Route path="/*" element={<NotFound />} />
-                </Routes>}
+              {/* {loading ? <PostLoadSkeleton /> : */}
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/profile" element={<AccountSettingPage />} />
+                <Route path="/search" element={<SearchPostPage />} />
+                <Route path="/following" element={<FollowingPostPage />} />
+                <Route path="/post/*" element={<PostPage />} />
+                <Route path="/your-post" element={<YourPostPage />} />
+                <Route path="/your-post/edit-post/*" element={<EditPostPage />} />
+                <Route path="/your-post/add-post" element={<AddPostPage />} />
+                <Route path="/*" element={<NotFound />} />
+              </Routes>
+              {/* } */}
             </section>
           </section>
         </BrowserRouter>

@@ -37,7 +37,7 @@ export default function Post() {
                 notify("Comment added", "success");
 
             } else {
-                const { error } = await request.json();
+                const error = await request.json();
                 notify(error, "error");
             }
         }
@@ -75,7 +75,7 @@ export default function Post() {
                 setTitle(data.title);
                 setLodaing(false);
             } else {
-                const { error } = await request.json();
+                const error = await request.json();
                 notify(error, "error");
             }
         })

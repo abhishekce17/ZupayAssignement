@@ -22,7 +22,7 @@ export default function EditPost() {
                 const response = await request.json();
                 setPostContent(response);
             } else {
-                const { error } = await request.json();
+                const error = await request.json();
                 notify(error, "error");
             }
             setLoading(false);
