@@ -37,11 +37,11 @@ function App() {
         setUsersPost(posts);
         setUsersFollowing(following);
       }
+      setLoading(false);
     }
     if (cookies.authToken) {
       fetchUserInfo()
     }
-    setLoading(false);
   }, [cookies.authToken])
 
   return (
@@ -57,21 +57,21 @@ function App() {
               <Sidebar />
             </section>
             <section className="bg-custom-lightest-gray flex-grow rounded-t-xl md:rounded-none md:rounded-ss-xl p-2 sm:p-6 overflow-y-scroll no-scrollbar" >
-              {/* {loading ? <PostLoadSkeleton /> : */}
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/profile" element={<AccountSettingPage />} />
-                <Route path="/search" element={<SearchPostPage />} />
-                <Route path="/following" element={<FollowingPostPage />} />
-                <Route path="/post/*" element={<PostPage />} />
-                <Route path="/your-post" element={<YourPostPage />} />
-                <Route path="/your-post/edit-post/*" element={<EditPostPage />} />
-                <Route path="/your-post/add-post" element={<AddPostPage />} />
-                <Route path="/*" element={<NotFound />} />
-              </Routes>
-              {/* } */}
+              {loading ? <PostLoadSkeleton /> :
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/profile" element={<AccountSettingPage />} />
+                  <Route path="/search" element={<SearchPostPage />} />
+                  <Route path="/following" element={<FollowingPostPage />} />
+                  <Route path="/post/*" element={<PostPage />} />
+                  <Route path="/your-post" element={<YourPostPage />} />
+                  <Route path="/your-post/edit-post/*" element={<EditPostPage />} />
+                  <Route path="/your-post/add-post" element={<AddPostPage />} />
+                  <Route path="/*" element={<NotFound />} />
+                </Routes>
+              }
             </section>
           </section>
         </BrowserRouter>
