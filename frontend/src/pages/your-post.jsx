@@ -31,11 +31,11 @@ export default function YourPost() {
                 const error = await request.json();
                 notify(error, "error");
             }
+            setLoading(false);
         }
         if (cookies.authToken) {
             fetchPostsSnapshot()
         }
-        setLoading(false);
     }, []);
 
 
