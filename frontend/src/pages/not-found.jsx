@@ -2,6 +2,6 @@ import React from 'react'
 
 export const NotFound = () => {
     return (
-        <div>404 NotFound</div>
+        <div className="flex justify-center items-center font-semibold text-lg" >No Post found</div>
     )
 }
