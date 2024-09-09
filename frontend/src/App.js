@@ -41,6 +41,8 @@ function App() {
     }
     if (cookies.authToken) {
       fetchUserInfo()
+    } else {
+      setLoading(false);
     }
   }, [cookies.authToken])
 
